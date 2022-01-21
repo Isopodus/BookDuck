@@ -3,7 +3,7 @@ import { View } from "react-native";
 
 import { withTheme, withLocalStyles } from "../../../hoc/withTheme";
 
-import { componentStyles } from "./RowLayout.styles";
+import { componentStyles } from "./styles";
 
 const RowLayout = ({ style, styles, children }) => <View style={{ ...styles.layout, ...style }}>{children}</View>;
 

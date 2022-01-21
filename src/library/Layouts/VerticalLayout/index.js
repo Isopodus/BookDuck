@@ -3,7 +3,7 @@ import { View } from "react-native";
 
 import { withTheme, withLocalStyles } from "../../../hoc/withTheme";
 
-import { componentStyles } from "./VerticalLayout.styles";
+import { componentStyles } from "./styles";
 
 const VerticalLayout = ({ style, styles, children }) => <View style={{ ...styles.layout, ...style }}>{children}</View>;
 

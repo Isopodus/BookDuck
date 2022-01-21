@@ -12,5 +12,5 @@ export const withLocalStyles = Component => props => {
 
   const localStyles = useMemo(() => styles(theme), [styles, theme]);
 
-  return <Component {...restProps} styles={localStyles} />;
+  return <Component {...restProps} theme={theme} styles={localStyles} />;
 };

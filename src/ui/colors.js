@@ -1,6 +1,13 @@
 export const colors = {
   white: "#fff",
   black: "#000",
+
+  blue: "#82e8ff",
+  darkblue: "#8583fe",
+  green: "#81ffad",
+  yellow: "#ffe382",
+  red: "#ffe382",
+  orange: "#f8aa4b",
 };
 
 export const rgba = (hexCode, opacity = 1) => {
