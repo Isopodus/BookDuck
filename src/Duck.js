@@ -1,7 +1,9 @@
 import api from "./api";
 
 class Duck {
-  constructor() {
+  constructor(setLoading) {
+    this.setLoading = setLoading; // A function to be called each tme we need to show the loading animation
+
     this.mood = null; // Users mood defined by sentiment analisys
 
     this.currentStage = 0; // Current dialog stage starting form 0 as the greeting
@@ -42,6 +44,8 @@ class Duck {
 
   // Tell the duck what user said and get an answer
   proceedDialog = async userMessage => {
+    this.setLoading(true);
+
     const feelings = (await api.getFeelings(userMessage)).data;
     const topics = (await api.getTopics(userMessage)).data;
 
@@ -71,7 +75,9 @@ class Duck {
         "cool",
         "all good",
         "scared",
+        "right",
       ];
+      console.log(topics.keywords);
 
       // Check if the topics contain typical mood words indicating that we should ask for more keywords
       if (topics.keywords.length <= 3 && topics.keywords.every(key => moodKeywords.indexOf(key) >= 0)) {
@@ -90,12 +96,13 @@ class Duck {
       books = await this.findBooks(topics.categories);
     }
 
+    this.setLoading(false);
     return { answer, books, topics, mood: this.mood };
   };
 
   findBooks = async categories => {
     // Get the most matching category and prepare it
-    let category = Object.keys(categories).reduce((cat1, cat2) => (obj[cat1] > obj[cat2] ? cat1 : cat2));
+    let category = Object.keys(categories).reduce((cat1, cat2) => (categories[cat1] > categories[cat2] ? cat1 : cat2));
     category = category.split("/")[0];
 
     // Find the book subject by category

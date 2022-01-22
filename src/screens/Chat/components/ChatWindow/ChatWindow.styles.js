@@ -6,7 +6,6 @@ export const styles = ({ sizes, fonts, colors }) => ({
     justifyContent: "flex-start",
     alignItems: "stretch",
     marginBottom: sizes.scale(20),
-    paddingHorizontal: sizes.scale(10),
 
     borderRadius: sizes.scale(15),
     borderWidth: 2,
@@ -14,5 +13,9 @@ export const styles = ({ sizes, fonts, colors }) => ({
     borderStyle: "solid",
 
     backgroundColor: colors.white,
+  },
+  scrollView: {
+    paddingHorizontal: sizes.scale(10),
+    paddingBottom: sizes.scale(40),
   },
 });
