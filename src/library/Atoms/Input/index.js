@@ -13,7 +13,6 @@ const Input = ({ theme, name, placeholder, componentStyles, onChange }) => {
       placeholder={placeholder}
       onChange={handleChange}
       onSubmitEditing={onChange}
-      returnKeyType="enter"
       multiline
     />
   );

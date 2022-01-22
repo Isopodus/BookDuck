@@ -12,6 +12,7 @@ export const styles = ({ fonts, sizes, colors }) => {
       marginBottom: sizes.scale(10),
     },
     message: {
+      minHeight: sizes.scale(34),
       marginLeft: sizes.scale(10),
       padding: sizes.scale(10),
 

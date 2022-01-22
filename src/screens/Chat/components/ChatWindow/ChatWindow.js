@@ -2,6 +2,7 @@ import React from "react";
 import { ScrollView } from "react-native";
 import VerticalLayout from "../../../../library/Layouts/VerticalLayout";
 import Message from "../../../../library/Molecules/Message";
+import ChatTypingIndicator from "../ChatTypingIndicator/ChatTypingIndicator";
 
 import { withTheme } from "../../../../hoc/withTheme";
 
@@ -18,6 +19,7 @@ const ChatWindow = ({ componentStyles }) => {
         />
         <Message message="Text" isMy />
       </ScrollView>
+      <ChatTypingIndicator />
     </VerticalLayout>
   );
 };
