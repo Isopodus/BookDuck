@@ -1,16 +1,12 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { useTheme } from "@react-navigation/native";
 
-export const withTheme = Component => props => {
-  const theme = useTheme();
+export const withTheme =
+  Component =>
+  ({ componentStyles, ...props }) => {
+    const theme = useTheme();
 
-  return <Component {...props} theme={theme} />;
-};
+    const localStyles = useMemo(() => componentStyles(theme), [componentStyles, theme]);
 
-export const withLocalStyles = Component => props => {
-  const { theme, styles, ...restProps } = props;
-
-  const localStyles = useMemo(() => styles(theme), [styles, theme]);
-
-  return <Component {...restProps} theme={theme} styles={localStyles} />;
-};
+    return <Component {...props} theme={theme} componentStyles={localStyles} />;
+  };

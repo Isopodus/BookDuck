@@ -1,17 +1,20 @@
 import React from "react";
 import VerticalLayout from "../../library/Layouts/VerticalLayout";
-import { withTheme, withLocalStyles } from "../../hoc/withTheme";
+import { withTheme } from "../../hoc/withTheme";
+
+import { useSelector } from "react-redux";
 
 import ChatWindow from "./components/ChatWindow/ChatWindow";
 import ChatInput from "./components/ChatInput/ChatInput";
 
-import { componentStyles } from "./Chat.styles";
+const Chat = ({ componentStyles }) => {
+  const color = useSelector(state => state.theme);
+  return (
+    <VerticalLayout style={componentStyles.screen(color)}>
+      <ChatWindow />
+      <ChatInput />
+    </VerticalLayout>
+  );
+};
 
-const Chat = ({ styles }) => (
-  <VerticalLayout style={styles.screen}>
-    <ChatWindow />
-    <ChatInput />
-  </VerticalLayout>
-);
-
-export default withTheme(props => withLocalStyles(Chat)({ ...props, styles: componentStyles }));
+export default props => withTheme(Chat)({ ...props, componentStyles: require("./Chat.styles").styles });

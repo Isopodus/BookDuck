@@ -1,4 +1,4 @@
-export const componentStyles = ({ fonts, sizes, colors }) => ({
+export const styles = ({ fonts, sizes, colors }) => ({
   input: {
     flex: 1,
     width: "100%",

@@ -1,4 +1,4 @@
-export const componentStyles = ({ sizes, fonts, colors }) => ({
+export const styles = ({ sizes, fonts, colors }) => ({
   screen: {
     display: "flex",
     justifyContent: "center",

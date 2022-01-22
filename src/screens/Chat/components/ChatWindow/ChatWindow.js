@@ -1,11 +1,25 @@
 import React from "react";
-import { withTheme, withLocalStyles } from "../../../../hoc/withTheme";
+import { ScrollView } from "react-native";
 import VerticalLayout from "../../../../library/Layouts/VerticalLayout";
+import Message from "../../../../library/Molecules/Message";
 
-import { componentStyles } from "./ChatWindow.styles";
+import { withTheme } from "../../../../hoc/withTheme";
 
-const ChatWindow = ({ styles }) => {
-  return <VerticalLayout style={styles.container}></VerticalLayout>;
+const ChatWindow = ({ componentStyles }) => {
+  return (
+    <VerticalLayout style={componentStyles.container}>
+      <ScrollView>
+        <Message
+          message="Hello again! Would you like to talk or see the history?"
+          btns={[
+            { text: "Start chatting", onPress: () => {} },
+            { text: "Show history", onPress: () => {} },
+          ]}
+        />
+        <Message message="Text" isMy />
+      </ScrollView>
+    </VerticalLayout>
+  );
 };
 
-export default withTheme(props => withLocalStyles(ChatWindow)({ ...props, styles: componentStyles }));
+export default props => withTheme(ChatWindow)({ ...props, componentStyles: require("./ChatWindow.styles").styles });

@@ -1,10 +1,10 @@
 import React from "react";
 import { View } from "react-native";
 
-import { withTheme, withLocalStyles } from "../../../hoc/withTheme";
+import { withTheme } from "../../../hoc/withTheme";
 
-import { componentStyles } from "./styles";
+const RowLayout = ({ componentStyles, style, children }) => (
+  <View style={{ ...componentStyles.layout, ...style }}>{children}</View>
+);
 
-const RowLayout = ({ style, styles, children }) => <View style={{ ...styles.layout, ...style }}>{children}</View>;
-
-export default withTheme(props => withLocalStyles(RowLayout)({ ...props, styles: componentStyles }));
+export default props => withTheme(RowLayout)({ ...props, componentStyles: require("./styles").styles });

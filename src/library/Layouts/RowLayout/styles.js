@@ -1,4 +1,4 @@
-export const componentStyles = () => ({
+export const styles = () => ({
   layout: {
     display: "flex",
     flexDirection: "row",
