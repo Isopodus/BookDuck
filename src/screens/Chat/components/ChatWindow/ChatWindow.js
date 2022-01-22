@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { ScrollView } from "react-native";
 import VerticalLayout from "../../../../library/Layouts/VerticalLayout";
 import Message from "../../../../library/Molecules/Message";
@@ -11,10 +11,15 @@ import { withTheme } from "../../../../hoc/withTheme";
 
 const ChatWindow = ({ componentStyles, messages }) => {
   const isLoading = useSelector(store => store.isLoading);
+  const scrollViewRef = useRef();
 
   return (
     <VerticalLayout style={componentStyles.container}>
-      <ScrollView contentContainerStyle={componentStyles.scrollView}>
+      <ScrollView
+        contentContainerStyle={componentStyles.scrollView}
+        ref={scrollViewRef}
+        onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
+      >
         {messages.map((message, idx) => (
           <Message
             key={idx}
