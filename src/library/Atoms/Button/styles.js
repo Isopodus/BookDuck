@@ -3,6 +3,7 @@ export const styles = ({ fonts, sizes, colors }) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    minHeight: sizes.scale(30),
 
     borderRadius: sizes.scale(15),
 
