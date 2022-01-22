@@ -1,37 +1,26 @@
 import React, { useCallback, useEffect, useState } from "react";
 import VerticalLayout from "../../library/Layouts/VerticalLayout";
-import { withTheme } from "../../hoc/withTheme";
+import ChatWindow from "./components/ChatWindow/ChatWindow";
+import ChatInput from "./components/ChatInput/ChatInput";
+import BookModal from "../components/BookModal/BookModal";
 
-import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
+
+import { withTheme } from "../../hoc/withTheme";
 import { setAction } from "../../store/actions";
+import { useOpenClose } from "../../hooks/useOpenClose";
 
 import Duck from "../../Duck";
 
-import ChatWindow from "./components/ChatWindow/ChatWindow";
-import ChatInput from "./components/ChatInput/ChatInput";
-
 const Chat = ({ componentStyles }) => {
+  const color = useSelector(state => state.theme);
+
   const dispatch = useDispatch();
 
   const [messages, setMessages] = useState([]);
   const [duck] = useState(new Duck(loadingState => dispatch(setAction("loading", loadingState))));
 
-  useEffect(() => {
-    setMessages([
-      {
-        text: "Hello there! I'm the BookDuck, your itelligent book lookup helper! I will suggest you a book after a small conversation.",
-      },
-      { text: "How do you do?" },
-    ]);
-  }, []);
-
-  useEffect(() => {
-    const lastMessage = messages[messages.length - 1];
-    if (lastMessage?.isMy) {
-      tellTheDuck(lastMessage.text);
-    }
-  }, [messages]);
+  const [bookModal, openBookModal, closeBookModal] = useOpenClose(false);
 
   const onNewMessage = useCallback(
     userMessage => {
@@ -51,12 +40,30 @@ const Chat = ({ componentStyles }) => {
     [duck, messages, setMessages],
   );
 
-  const color = useSelector(state => state.theme);
+  useEffect(() => {
+    setMessages([
+      {
+        text: "Hello there! I'm the BookDuck, your itelligent book lookup helper! I will suggest you a book after a small conversation.",
+      },
+      { text: "How do you do?" },
+    ]);
+  }, []);
+
+  useEffect(() => {
+    const lastMessage = messages[messages.length - 1];
+    if (lastMessage?.isMy) {
+      tellTheDuck(lastMessage.text);
+    }
+  }, [messages]);
+
   return (
-    <VerticalLayout style={componentStyles.screen(color)}>
-      <ChatWindow messages={messages} />
-      <ChatInput onNewMessage={onNewMessage} />
-    </VerticalLayout>
+    <>
+      <VerticalLayout style={componentStyles.screen(color)}>
+        <ChatWindow messages={messages} />
+        <ChatInput onNewMessage={onNewMessage} />
+      </VerticalLayout>
+      <BookModal open={bookModal} toggleModal={closeBookModal} />
+    </>
   );
 };
 

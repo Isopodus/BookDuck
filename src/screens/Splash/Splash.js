@@ -15,7 +15,7 @@ const Splash = ({ componentStyles, theme }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const timeout = setTimeout(() => navigate("Chat"), 500);
+    const timeout = setTimeout(() => navigate("Chat"), 3000);
     return () => clearTimeout(timeout);
   }, []);
 
