@@ -1,5 +1,7 @@
 import React, { useMemo } from "react";
 import LottieView from "lottie-react-native";
+
+import voice from "../../../assets/animations/voice.json";
 import typing from "../../../assets/animations/typing.json";
 
 export const Animation = ({ name, style }) => {
@@ -8,7 +10,7 @@ export const Animation = ({ name, style }) => {
       case "typing":
         return typing;
       default:
-        return typing;
+        return voice;
     }
   }, [name]);
 

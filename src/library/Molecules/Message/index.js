@@ -24,6 +24,7 @@ const Message = ({ theme, componentStyles, message, btns = [], isMy = false }) =
 
   return (
     <VerticalLayout style={styles.wrapper}>
+      <Text style={styles.label}>{isMy ? "You" : "BookDuck"}</Text>
       <RowLayout style={{ ...styles.container, [isMy ? "marginRight" : "marginLeft"]: messageAnimation }} animated>
         <View style={isMy ? styles.messageTail(color) : styles.messageTail} />
         <View style={isMy ? styles.message(color) : styles.message}>

@@ -1,14 +1,22 @@
 export const styles = ({ fonts, sizes, colors }) => {
   const bot = {
     wrapper: {
+      marginTop: sizes.scale(20),
       alignItems: "flex-start",
+    },
+    label: {
+      marginLeft: sizes.scale(11),
+
+      fontFamily: fonts.regular,
+      fontSize: sizes.scale(11),
+      color: colors.grey,
     },
     container: {
       width: "85%",
       position: "relative",
       justifyContent: "flex-start",
       alignItems: "flex-end",
-      marginTop: sizes.scale(20),
+      marginTop: sizes.scale(7),
       marginBottom: sizes.scale(10),
     },
     message: {
@@ -57,6 +65,12 @@ export const styles = ({ fonts, sizes, colors }) => {
       wrapper: {
         ...bot.wrapper,
         alignItems: "flex-end",
+      },
+      label: {
+        ...bot.label,
+
+        marginLeft: 0,
+        marginRight: sizes.scale(11),
       },
       container: {
         ...bot.container,
