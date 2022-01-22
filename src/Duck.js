@@ -77,7 +77,6 @@ class Duck {
         "scared",
         "right",
       ];
-      console.log(topics.keywords);
 
       // Check if the topics contain typical mood words indicating that we should ask for more keywords
       if (topics.keywords.length <= 3 && topics.keywords.every(key => moodKeywords.indexOf(key) >= 0)) {
