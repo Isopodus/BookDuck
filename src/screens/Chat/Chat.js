@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import VerticalLayout from "../../library/Layouts/VerticalLayout";
 import ChatWindow from "./components/ChatWindow/ChatWindow";
 import ChatInput from "./components/ChatInput/ChatInput";
-import BookModal from "../components/BookModal/BookModal";
+import BookModal from "./components/BookModal/BookModal";
 
 import { useDispatch, useSelector } from "react-redux";
 

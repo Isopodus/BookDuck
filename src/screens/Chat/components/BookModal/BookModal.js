@@ -1,11 +1,11 @@
 import React, { useMemo } from "react";
 import { Text, TouchableOpacity } from "react-native";
-import { withTheme } from "../../../hoc/withTheme";
-import RowLayout from "../../../library/Layouts/RowLayout";
-import PrimaryButton from "../../../library/Atoms/Button/PrimaryButton";
-import { Icon } from "../../../library/Atoms/Icon";
-import VerticalLayout from "../../../library/Layouts/VerticalLayout";
-import Modal from "../../../library/Molecules/Modal";
+import { withTheme } from "../../../../hoc/withTheme";
+import RowLayout from "../../../../library/Layouts/RowLayout";
+import PrimaryButton from "../../../../library/Atoms/Button/PrimaryButton";
+import { Icon } from "../../../../library/Atoms/Icon";
+import VerticalLayout from "../../../../library/Layouts/VerticalLayout";
+import Modal from "../../../../library/Molecules/Modal";
 
 const BookModal = ({ open, theme, componentStyles, toggleModal }) => {
   const emoji = useMemo(() => {
