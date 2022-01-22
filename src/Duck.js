@@ -1,8 +1,7 @@
-import { getFeelings, getTopics } from "./api";
+import api from "./api";
 
 class Duck {
   constructor() {
-    this.keywords = []; // Keywords to find the book by
     this.mood = null; // Users mood defined by sentiment analisys
 
     this.currentStage = 0; // Current dialog stage starting form 0 as the greeting
@@ -43,14 +42,14 @@ class Duck {
 
   // Tell the duck what user said and get an answer
   proceedDialog = async userMessage => {
-    const feelings = (await getFeelings(userMessage)).data;
-    const topics = (await getTopics(userMessage)).data;
+    const feelings = (await api.getFeelings(userMessage)).data;
+    const topics = (await api.getTopics(userMessage)).data;
 
     this.mood = feelings.emotion_prediction;
     const moodBlock = this.emotionAnswers[this.mood];
 
     let answer = "";
-    let book = null;
+    let books = [];
 
     if (this.currentStage === 0) {
       // Stage 0 - Greetings answer
@@ -80,20 +79,53 @@ class Duck {
         answer += moodBlock.keywordsRequest;
       } else {
         // Looks like we have enough keywords already, so try to find a book
-        this.keywords = topics.keywords;
         answer += moodBlock.conclusion;
-        book = null; // TODO: Find the book
+        books = await this.findBooks(topics.categories);
       }
 
       this.currentStage = 1;
     } else if (this.currentStage === 1) {
       // Stage 2 - Find the book
-      this.keywords = topics.keywords;
       answer += moodBlock.conclusion;
-      book = null; // TODO: Find the book
+      books = await this.findBooks(topics.categories);
     }
 
-    return { answer, book, topics };
+    return { answer, books, topics, mood: this.mood };
+  };
+
+  findBooks = async categories => {
+    // Get the most matching category and prepare it
+    let category = Object.keys(categories).reduce((cat1, cat2) => (obj[cat1] > obj[cat2] ? cat1 : cat2));
+    category = category.split("/")[0];
+
+    // Find the book subject by category
+    const subjects = (await api.getSubjects(category)).data.data;
+
+    // Get the best subject by how many books there are for it
+    const bestSubject = subjects.reduce((prev, current) => {
+      return prev.count > current.count ? prev : current;
+    }).key;
+
+    // Find books by that subject
+    const books = (await api.getBooks(bestSubject)).data.data;
+
+    // Get first 10 books and sort out the ones in English
+    const result = [];
+    // Create an array of titles to send at the language detection API
+    const titles = [];
+    books.slice(0, 10).forEach((book, idx) => {
+      titles.push({ id: idx, text: book.title });
+    });
+
+    const languages = (await api.getTextLanguage(titles)).data;
+
+    languages.forEach((lang, idx) => {
+      if (lang.detected_language === "en") {
+        result.push(books[idx]);
+      }
+    });
+
+    return result;
   };
 }
 

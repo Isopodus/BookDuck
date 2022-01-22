@@ -9,11 +9,9 @@ import { theme } from "./src/ui";
 export const App = () => {
   useEffect(() => {
     const duck = new Duck();
-    duck.proceedDialog("I'm so angry!").then(res => {
+    duck.proceedDialog("I'm so happy! Got my new car, so I can travel across the whole country!").then(res => {
       console.log(res);
-      duck
-        .proceedDialog("My boss said I need to walk 20km a day by foot, I'm getting too tired!")
-        .then(res => console.log(res));
+      // duck.proceedDialog("I want to get a better salary!").then(res => console.log(res));
     });
   });
 
