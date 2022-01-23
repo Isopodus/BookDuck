@@ -5,6 +5,7 @@ import ChatInput from "./components/ChatInput/ChatInput";
 import BookModal from "./components/BookModal/BookModal";
 import ChatHeader from "./components/ChatHeader/ChatHeader";
 
+import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 
 import { withTheme } from "../../hoc/withTheme";
@@ -16,13 +17,18 @@ import Duck from "../../models/Duck";
 import Tts from "react-native-tts";
 import { Keyboard } from "react-native";
 
+import Sound from "react-native-sound";
+import _ from "denodeify";
+
 const Chat = ({ componentStyles }) => {
   const color = useSelector(state => state.theme);
+  const { navigate } = useNavigation();
 
   const dispatch = useDispatch();
 
+  const [quack, setQuack] = useState(null);
   const [messages, setMessages] = useState([]);
-  const [bookId, setBookId] = useState([]);
+  const [selectedBook, setSelectedBook] = useState(null);
   const [duck] = useState(new Duck(loadingState => dispatch(setAction("loading", loadingState))));
 
   const [isVolumeOn] = useLocalStorage("volume", true);
@@ -34,19 +40,30 @@ const Chat = ({ componentStyles }) => {
     const defaultMessages = [
       {
         text: "Hello there! I'm the BookDuck, your itelligent book lookup helper! I will suggest you a book after a small conversation.",
-        buttons: [{ text: "Show lookup history", onPress: () => {} }],
+        buttons: [{ text: "Show lookup history", onPress: () => navigate("History") }],
       },
       { text: "How do you do?" },
     ];
 
+    // Set the default duck messages on startup
     setMessages(defaultMessages);
 
+    // Initialize and play TTS messages if volume is enabled\
+    Sound.setCategory("Playback");
     Tts.getInitStatus().then(() => {
       Tts.setDefaultLanguage("en-US");
       Tts.setDefaultVoice("en-us-x-tpd-network");
       Tts.setDefaultPitch(1.5);
 
-      isVolumeOn && defaultMessages.forEach(message => Tts.speak(message.text));
+      const quack = new Sound("duck.mp3", Sound.MAIN_BUNDLE, err => {
+        if (isVolumeOn) {
+          !err &&
+            quack.play(() => {
+              defaultMessages.forEach(message => Tts.speak(message.text));
+            });
+        }
+      });
+      setQuack(quack);
     });
   }, []);
 
@@ -64,15 +81,18 @@ const Chat = ({ componentStyles }) => {
         let newMessages = [...messages];
         if (response.answer) {
           newMessages = [...newMessages, { text: response.answer }];
-          isVolumeOn && Tts.speak(response.answer);
+          isVolumeOn && quack.play() && Tts.speak(response.answer);
         }
         if (response.books.length > 0) {
           const selectedBook = response.books[Math.floor(Math.random() * response.books.length)];
-          onUpdateHistory([...history, selectedBook]);
-          isVolumeOn && Tts.speak(selectedBook.title);
+          api.getBookData(selectedBook.id).then(book => {
+            const bookData = book.data;
+            setSelectedBook(bookData);
+            onUpdateHistory([...history, bookData]);
+          });
 
           const dialogContinueMessage = "Tell me anything else if you want to find another one!";
-          isVolumeOn && Tts.speak(dialogContinueMessage);
+          isVolumeOn && Tts.speak(selectedBook.title) && Tts.speak(dialogContinueMessage);
           duck.resetDialog(1);
 
           newMessages = [
@@ -84,7 +104,6 @@ const Chat = ({ componentStyles }) => {
                   text: "Show book details",
                   onPress: () => {
                     Keyboard.dismiss();
-                    setBookId(selectedBook.id);
                     openBookModal();
                   },
                 },
@@ -99,7 +118,7 @@ const Chat = ({ componentStyles }) => {
         setMessages(newMessages);
       });
     },
-    [duck, messages, setMessages, setBookId, openBookModal, history, isVolumeOn],
+    [duck, messages, setMessages, openBookModal, history, isVolumeOn],
   );
 
   useEffect(() => {
@@ -116,7 +135,7 @@ const Chat = ({ componentStyles }) => {
         <ChatWindow messages={messages} />
         <ChatInput onNewMessage={onNewMessage} />
       </VerticalLayout>
-      <BookModal open={bookModal} toggleModal={closeBookModal} bookId={bookId} />
+      <BookModal open={bookModal} toggleModal={closeBookModal} book={selectedBook} />
     </>
   );
 };

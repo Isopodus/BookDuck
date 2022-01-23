@@ -4,7 +4,7 @@ import RowLayout from "../../../../library/Layouts/RowLayout";
 import PrimaryButton from "../../../../library/Atoms/Button/PrimaryButton";
 import { Text, View } from "react-native";
 
-const HistoryItem = ({ componentStyles, title, authors }) => {
+const HistoryItem = ({ componentStyles, title, authors, viewDetails }) => {
   const authorsList = useMemo(() => authors.map(author => author.name).join(", "), [authors]);
 
   return (
@@ -13,7 +13,7 @@ const HistoryItem = ({ componentStyles, title, authors }) => {
         <Text style={componentStyles.bookTitle}>{title}</Text>
         <Text style={componentStyles.author}>{authorsList}</Text>
       </View>
-      <PrimaryButton style={componentStyles.btn} text={"text"} onPress={() => {}}>
+      <PrimaryButton style={componentStyles.btn} text={"text"} onPress={() => viewDetails({ title, authors })}>
         <Text style={componentStyles.btnText}>View details</Text>
       </PrimaryButton>
     </RowLayout>

@@ -8,9 +8,7 @@ import VerticalLayout from "../../../../library/Layouts/VerticalLayout";
 import Modal from "../../../../library/Molecules/Modal";
 import api from "../../../../requests/api";
 
-const BookModal = ({ open, theme, componentStyles, toggleModal, bookId = null }) => {
-  const [book, setBook] = useState(null);
-
+const BookModal = ({ open, theme, componentStyles, toggleModal, book }) => {
   const emoji = useMemo(() => {
     const icons = ["slightly-smile", "smiley", "smiling"];
     return icons[Math.floor(Math.random() * icons.length)];
@@ -24,12 +22,6 @@ const BookModal = ({ open, theme, componentStyles, toggleModal, bookId = null })
   const openWeb = useCallback(book => {
     Linking.openURL("https://www.google.com/search?q=" + book.title + " - " + book.authors[0]?.name);
   }, []);
-
-  useEffect(() => {
-    if (!open) return;
-    if (bookId === null) return;
-    api.getBookData(bookId).then(book => setBook(book.data));
-  }, [open, bookId]);
 
   return (
     <Modal style={componentStyles.modal} open={open}>

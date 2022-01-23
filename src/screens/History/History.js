@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { ScrollView, Text, TouchableOpacity } from "react-native";
+import { ScrollView, Text, TouchableOpacity, Linking } from "react-native";
 import RowLayout from "../../library/Layouts/RowLayout";
 import VerticalLayout from "../../library/Layouts/VerticalLayout";
 import { Icon } from "../../library/Atoms/Icon";
@@ -19,6 +19,10 @@ const History = ({ componentStyles, theme }) => {
 
   const onGoBack = useCallback(() => navigate("Chat"), []);
 
+  const openWeb = useCallback(book => {
+    Linking.openURL("https://www.google.com/search?q=" + book.title + " - " + book.authors[0]?.name);
+  }, []);
+
   return (
     <VerticalLayout style={componentStyles.screen(color)}>
       <RowLayout style={componentStyles.header}>
@@ -29,7 +33,7 @@ const History = ({ componentStyles, theme }) => {
       </RowLayout>
       <ScrollView>
         {history.length ? (
-          history.map(({ id, ...restProps }) => <HistoryItem key={id} {...restProps} />)
+          history.map(({ id, ...restProps }) => <HistoryItem key={id} {...restProps} viewDetails={openWeb} />)
         ) : (
           <Text style={componentStyles.emptyText}>Looks like there are no books here yet :(</Text>
         )}
