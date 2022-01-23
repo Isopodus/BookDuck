@@ -20,8 +20,8 @@ const Splash = ({ componentStyles, theme }) => {
   }, []);
 
   useEffect(() => {
-    const { blue, darkblue, yellow, red, green, orange } = theme.colors;
-    const backgrounds = [blue, darkblue, green, yellow, red, green, orange];
+    const { blue, darkblue, yellow, red, green } = theme.colors;
+    const backgrounds = [blue, darkblue, green, yellow, red, green];
 
     dispatch(setAction("theme", backgrounds[Math.floor(Math.random() * backgrounds.length)]));
   }, [dispatch, theme]);
