@@ -1,7 +1,7 @@
 export const styles = ({ sizes, fonts, colors }) => ({
   container: {
     width: "100%",
-    minHeight: sizes.scale(70),
+    minHeight: sizes.scale(65),
     padding: sizes.scale(10),
     justifyContent: "space-between",
     alignItems: "flex-start",

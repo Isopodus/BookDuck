@@ -7,6 +7,5 @@ export const styles = ({ fonts, sizes, colors }) => ({
     fontFamily: fonts.regular,
     fontSize: sizes.scale(14),
     color: colors.black,
-    lineHeight: sizes.scale(10),
   },
 });

@@ -19,6 +19,7 @@ const ChatWindow = ({ componentStyles, messages }) => {
         contentContainerStyle={componentStyles.scrollView}
         ref={scrollViewRef}
         onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
+        keyboardShouldPersistTaps={"handled"}
       >
         {messages.map((message, idx) => (
           <Message key={idx} isMy={message.isMy} message={message.text} btns={message.buttons} />

@@ -4,7 +4,7 @@ export const styles = ({ fonts, sizes, colors }) => {
       marginTop: sizes.scale(20),
       alignItems: "flex-start",
     },
-    label: {
+    nickname: {
       marginLeft: sizes.scale(11),
 
       fontFamily: fonts.regular,
@@ -66,8 +66,8 @@ export const styles = ({ fonts, sizes, colors }) => {
         ...bot.wrapper,
         alignItems: "flex-end",
       },
-      label: {
-        ...bot.label,
+      nickname: {
+        ...bot.nickname,
 
         marginLeft: 0,
         marginRight: sizes.scale(11),

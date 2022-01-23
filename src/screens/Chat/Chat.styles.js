@@ -3,6 +3,7 @@ export const styles = ({ sizes, fonts, colors }) => ({
     width: "100%",
     height: "100%",
     justifyContent: "space-between",
+    alignItems: "stretch",
     padding: sizes.scale(15),
 
     backgroundColor: color,
