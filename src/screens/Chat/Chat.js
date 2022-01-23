@@ -11,6 +11,7 @@ import { setAction } from "../../store/actions";
 import { useOpenClose } from "../../hooks/useOpenClose";
 
 import Duck from "../../Duck";
+import Tts from "react-native-tts";
 
 const Chat = ({ componentStyles }) => {
   const color = useSelector(state => state.theme);
