@@ -41,7 +41,15 @@ const Chat = ({ componentStyles }) => {
     const defaultMessages = [
       {
         text: "Hello there! I'm the BookDuck, your itelligent book lookup helper! I will suggest you a book after a small conversation.",
-        buttons: [{ text: "Show lookup history", onPress: () => navigate("History") }],
+        buttons: [
+          {
+            text: "Show lookup history",
+            onPress: () => {
+              navigate("History");
+              Tts.stop();
+            },
+          },
+        ],
       },
       { text: "How do you do?" },
     ];
@@ -75,7 +83,7 @@ const Chat = ({ componentStyles }) => {
   useEffect(() => {
     const lastMessage = messages[messages.length - 1];
     if (lastMessage?.isMy) {
-      waitForDuckAnswer(lastMessage.text);
+      setTimeout(() => waitForDuckAnswer(lastMessage.text), 1200);
     }
   }, [messages]);
 
