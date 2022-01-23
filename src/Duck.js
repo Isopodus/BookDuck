@@ -54,7 +54,14 @@ class Duck {
 
     let answer = "";
     let books = [];
-    console.log(topics.keywords);
+
+    console.log(topics.keywords.length, topics.keywords[0]);
+    if (!topics.keywords.length || topics.keywords[0].length < 3) {
+      answer = "Sorry, I didn't get it, can you repeat please?";
+      this.setLoading(false);
+      return { answer, books, topics, mood: this.mood };
+    }
+
     if (this.currentStage === 0) {
       // Stage 0 - Greetings answer
       answer += this.getRandom(moodBlock.responses) + " ";
@@ -79,24 +86,41 @@ class Duck {
       ];
 
       // Check if the topics contain typical mood words indicating that we should ask for more keywords
+      console.log(
+        topics.keywords.length,
+        topics.keywords.every(key => moodKeywords.indexOf(key.toLowerCase()) >= 0),
+        topics,
+      );
       if (topics.keywords.length <= 3 && topics.keywords.every(key => moodKeywords.indexOf(key.toLowerCase()) >= 0)) {
         // Ask user a question
         answer += moodBlock.keywordsRequest;
       } else {
         // Looks like we have enough keywords already, so try to find a book
-        answer += moodBlock.conclusion;
-        books = await this.findBooks(topics.categories);
+        res = await this.doBookLookup(answer, topics.categories, moodBlock);
+        books = res.books;
+        answer = res.answer;
       }
 
       this.currentStage = 1;
     } else if (this.currentStage === 1) {
       // Stage 2 - Find the book
-      answer += moodBlock.conclusion;
-      books = await this.findBooks(topics.categories);
+      res = await this.doBookLookup(answer, topics.categories, moodBlock);
+      books = res.books;
+      answer = res.answer;
     }
 
     this.setLoading(false);
     return { answer, books, topics, mood: this.mood };
+  };
+
+  doBookLookup = async (answer, categories, moodBlock) => {
+    const books = await this.findBooks(categories);
+    if (books.length < 1) {
+      answer = "Sorry, I was not able to find a book for you. Can you please better explain what did you mean?";
+    } else {
+      answer += moodBlock.conclusion;
+    }
+    return { answer, books };
   };
 
   findBooks = async categories => {
@@ -120,7 +144,7 @@ class Duck {
     const result = [];
     // Create an array of titles to send at the language detection API
     const titles = [];
-    books.slice(0, 5).forEach((book, idx) => {
+    books.slice(0, 10).forEach((book, idx) => {
       titles.push({ id: idx, text: book.title });
     });
 

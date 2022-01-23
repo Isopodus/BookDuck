@@ -26,7 +26,6 @@ const BookModal = ({ open, theme, componentStyles, toggleModal, bookId = null })
     Linking.openURL("https://www.google.com/search?q=" + bookName);
   });
 
-  console.log(book);
   const authors = book?.authors.map(author => author.name).join(", ");
   return (
     <Modal style={componentStyles.modal} open={open}>
@@ -45,7 +44,7 @@ const BookModal = ({ open, theme, componentStyles, toggleModal, bookId = null })
             <Text style={componentStyles.description}>{book.description}</Text>
           </VerticalLayout>
           <PrimaryButton style={componentStyles.btn} onPress={() => openWeb(book.title)}>
-            <Text style={componentStyles.btnText}>Search book on the web</Text>
+            <Text style={componentStyles.btnText}>Search this book on the web</Text>
           </PrimaryButton>
         </>
       )}

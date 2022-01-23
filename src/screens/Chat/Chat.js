@@ -24,8 +24,28 @@ const Chat = ({ componentStyles }) => {
 
   const [bookModal, openBookModal, closeBookModal] = useOpenClose(false);
 
+  useEffect(() => {
+    const defaultMessages = [
+      {
+        text: "Hello there! I'm the BookDuck, your itelligent book lookup helper! I will suggest you a book after a small conversation.",
+        buttons: [{ text: "Show lookup history", onPress: () => {} }],
+      },
+      { text: "How do you do?" },
+    ];
+    setMessages(defaultMessages);
+
+    Tts.getInitStatus().then(() => {
+      Tts.setDefaultLanguage("en-US");
+      Tts.setDefaultVoice("en-us-x-tpd-network");
+      Tts.setDefaultPitch(1.5);
+
+      defaultMessages.forEach(message => Tts.speak(message.text));
+    });
+  }, []);
+
   const onNewMessage = useCallback(
     userMessage => {
+      Tts.stop();
       setMessages([...messages, { text: userMessage, isMy: true }]);
     },
     [messages, setMessages],
@@ -34,21 +54,24 @@ const Chat = ({ componentStyles }) => {
   const tellTheDuck = useCallback(
     userMessage => {
       duck.proceedDialog(userMessage).then(response => {
-        console.log(response);
         let newMessages = [...messages];
         if (response.answer) {
           newMessages = [...newMessages, { text: response.answer }];
+          Tts.speak(response.answer);
         }
         if (response.books.length > 0) {
+          const selectedBook = response.books[Math.floor(Math.random() * response.books.length)];
+          Tts.speak(selectedBook.title);
+
           newMessages = [
             ...newMessages,
             {
-              text: `Title: ${response.books[0].title}`,
+              text: `Title: ${selectedBook.title}`,
               buttons: [
                 {
                   text: "Show book details",
                   onPress: () => {
-                    setBookId(response.books[0].id);
+                    setBookId(selectedBook.id);
                     openBookModal();
                   },
                 },
@@ -62,16 +85,6 @@ const Chat = ({ componentStyles }) => {
     },
     [duck, messages, setMessages, setBookId, openBookModal],
   );
-
-  useEffect(() => {
-    setMessages([
-      {
-        text: "Hello there! I'm the BookDuck, your itelligent book lookup helper! I will suggest you a book after a small conversation.",
-        buttons: [{ text: "Show lookup history", onPress: () => {} }],
-      },
-      { text: "How do you do?" },
-    ]);
-  }, []);
 
   useEffect(() => {
     const lastMessage = messages[messages.length - 1];
