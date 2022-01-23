@@ -54,7 +54,7 @@ class Duck {
 
     let answer = "";
     let books = [];
-
+    console.log(topics.keywords);
     if (this.currentStage === 0) {
       // Stage 0 - Greetings answer
       answer += this.getRandom(moodBlock.responses) + " ";
@@ -79,7 +79,7 @@ class Duck {
       ];
 
       // Check if the topics contain typical mood words indicating that we should ask for more keywords
-      if (topics.keywords.length <= 3 && topics.keywords.every(key => moodKeywords.indexOf(key) >= 0)) {
+      if (topics.keywords.length <= 3 && topics.keywords.every(key => moodKeywords.indexOf(key.toLowerCase()) >= 0)) {
         // Ask user a question
         answer += moodBlock.keywordsRequest;
       } else {
@@ -105,6 +105,7 @@ class Duck {
     category = category.split("/")[0];
 
     // Find the book subject by category
+    // TODO: min 10 chars ===================================================
     const subjects = (await api.getSubjects(category)).data.data;
 
     // Get the best subject by how many books there are for it
@@ -115,11 +116,11 @@ class Duck {
     // Find books by that subject
     const books = (await api.getBooks(bestSubject)).data.data;
 
-    // Get first 10 books and sort out the ones in English
+    // Get first 5 books and sort out the ones in English
     const result = [];
     // Create an array of titles to send at the language detection API
     const titles = [];
-    books.slice(0, 10).forEach((book, idx) => {
+    books.slice(0, 5).forEach((book, idx) => {
       titles.push({ id: idx, text: book.title });
     });
 

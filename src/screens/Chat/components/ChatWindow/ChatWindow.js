@@ -21,12 +21,7 @@ const ChatWindow = ({ componentStyles, messages }) => {
         onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
       >
         {messages.map((message, idx) => (
-          <Message
-            key={idx}
-            isMy={message.isMy}
-            message={message.text}
-            btns={idx === 0 ? [{ text: "Show lookup history", onPress: () => {} }] : undefined}
-          />
+          <Message key={idx} isMy={message.isMy} message={message.text} btns={message.buttons} />
         ))}
       </ScrollView>
       {isLoading && <ChatTypingIndicator />}

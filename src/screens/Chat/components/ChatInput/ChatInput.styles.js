@@ -34,7 +34,7 @@ export const styles = ({ sizes, fonts, colors }) => ({
     marginLeft: sizes.scale(10),
 
     fontFamily: fonts.semibold,
-    fontSizes: sizes.scale(13),
+    fontSize: sizes.scale(13),
     color: colors.white,
   },
 });

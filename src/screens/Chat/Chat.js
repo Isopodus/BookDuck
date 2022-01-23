@@ -18,6 +18,7 @@ const Chat = ({ componentStyles }) => {
   const dispatch = useDispatch();
 
   const [messages, setMessages] = useState([]);
+  const [bookId, setBookId] = useState([]);
   const [duck] = useState(new Duck(loadingState => dispatch(setAction("loading", loadingState))));
 
   const [bookModal, openBookModal, closeBookModal] = useOpenClose(false);
@@ -32,18 +33,40 @@ const Chat = ({ componentStyles }) => {
   const tellTheDuck = useCallback(
     userMessage => {
       duck.proceedDialog(userMessage).then(response => {
+        console.log(response);
+        let newMessages = [...messages];
         if (response.answer) {
-          setMessages([...messages, { text: response.answer }]);
+          newMessages = [...newMessages, { text: response.answer }];
         }
+        if (response.books.length > 0) {
+          newMessages = [
+            ...newMessages,
+            {
+              text: `Title: ${response.books[0].title}`,
+              buttons: [
+                {
+                  text: "Show book details",
+                  onPress: () => {
+                    setBookId(response.books[0].id);
+                    openBookModal();
+                  },
+                },
+              ],
+            },
+          ];
+        }
+
+        setMessages(newMessages);
       });
     },
-    [duck, messages, setMessages],
+    [duck, messages, setMessages, setBookId, openBookModal],
   );
 
   useEffect(() => {
     setMessages([
       {
         text: "Hello there! I'm the BookDuck, your itelligent book lookup helper! I will suggest you a book after a small conversation.",
+        buttons: [{ text: "Show lookup history", onPress: () => {} }],
       },
       { text: "How do you do?" },
     ]);
@@ -62,7 +85,7 @@ const Chat = ({ componentStyles }) => {
         <ChatWindow messages={messages} />
         <ChatInput onNewMessage={onNewMessage} />
       </VerticalLayout>
-      <BookModal open={bookModal} toggleModal={closeBookModal} />
+      <BookModal open={bookModal} toggleModal={closeBookModal} bookId={bookId} />
     </>
   );
 };

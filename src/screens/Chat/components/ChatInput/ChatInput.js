@@ -57,8 +57,10 @@ const ChatInput = ({ theme, componentStyles, onNewMessage }) => {
           <PrimaryButton
             style={{ ...componentStyles.btn, ...componentStyles.sendTextBtn }}
             onPress={() => {
-              onNewMessage(message);
-              setMessage("");
+              if (message.trim().length > 0) {
+                onNewMessage(message);
+                setMessage("");
+              }
             }}
           >
             <Icon name="paper-plane-outline" color={theme.colors.white} size={theme.sizes.scale(22)} />
