@@ -27,9 +27,8 @@ export const styles = ({ sizes, fonts, colors }) => ({
   author: {
     marginBottom: sizes.scale(15),
 
-    fontFamily: fonts.regular,
+    fontFamily: fonts.regularItalic,
     fontSize: sizes.scale(18),
-    fontStyle: "italic",
     color: colors.black,
   },
   description: {

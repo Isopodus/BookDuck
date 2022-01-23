@@ -9,6 +9,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 
 import { withTheme } from "../../hoc/withTheme";
+import { withPressBackListener } from "../../hoc/withPressBackListener";
 import { setAction } from "../../store/actions";
 import { useOpenClose } from "../../hooks/useOpenClose";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
@@ -140,4 +141,6 @@ const Chat = ({ componentStyles }) => {
   );
 };
 
-export default props => withTheme(Chat)({ ...props, componentStyles: require("./Chat.styles").styles });
+export default withPressBackListener(props =>
+  withTheme(Chat)({ ...props, componentStyles: require("./Chat.styles").styles }),
+);

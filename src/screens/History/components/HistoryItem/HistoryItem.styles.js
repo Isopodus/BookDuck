@@ -24,9 +24,8 @@ export const styles = ({ sizes, fonts, colors }) => ({
     textTransform: "uppercase",
   },
   author: {
-    fontFamily: fonts.regular,
+    fontFamily: fonts.regularItalic,
     fontSize: sizes.scale(12),
-    fontStyle: "italic",
     color: colors.black,
   },
   btn: {
