@@ -142,18 +142,18 @@ class Duck {
     console.log("Selected keywords subejcts:", subjectsKeyword.slice(0, 10));
 
     // Wait a whole second to cope with API speed limit
-    await new Promise(resolve => setTimeout(resolve, 1100));
+    await new Promise(resolve => setTimeout(resolve, 1500));
     let subjects = subjectsKeyword.length ? subjectsKeyword : subjectsCategory;
 
     // If the category an be split in two: try to find a book by it's 2 parts
-    if (keywords[0].includes(" ")) {
+    if (!subjectsKeyword.length && keywords[0].includes(" ")) {
       const kwd1 = keywords[0].split(" ")[0].slice(0, 10);
       const kwd2 = keywords[0].split(" ")[1].slice(0, 10);
       console.log(kwd1, kwd2);
 
       const subjectsKeyword1 = kwd1.length > 2 ? (await api.getSubjects(kwd1)).data.data : [];
       const subjectsKeyword2 = kwd2.length > 2 ? (await api.getSubjects(kwd2)).data.data : [];
-      await new Promise(resolve => setTimeout(resolve, 1100));
+      await new Promise(resolve => setTimeout(resolve, 1500));
 
       console.log("K1:", subjectsKeyword1.slice(0, 10));
       console.log("K2:", subjectsKeyword2.slice(0, 10));
