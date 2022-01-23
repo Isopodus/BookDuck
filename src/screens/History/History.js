@@ -31,7 +31,7 @@ const History = ({ componentStyles, theme }) => {
         </TouchableOpacity>
         <Text style={componentStyles.headerTitle}>History</Text>
       </RowLayout>
-      <ScrollView>
+      <ScrollView contentContainerStyle={componentStyles.scrollView}>
         {history.length ? (
           history.map(({ id, ...restProps }) => <HistoryItem key={id} {...restProps} viewDetails={openWeb} />)
         ) : (

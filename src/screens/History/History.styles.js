@@ -2,12 +2,17 @@ export const styles = ({ sizes, fonts, colors }) => ({
   screen: color => ({
     height: "100%",
     alignItems: "stretch",
-    padding: sizes.scale(15),
+    paddingTop: sizes.scale(15),
 
     backgroundColor: color,
   }),
+  scrollView: {
+    paddingHorizontal: sizes.scale(25),
+    paddingBottom: sizes.scale(15),
+  },
   header: {
     justifyContent: "space-between",
+    paddingHorizontal: sizes.scale(15),
     paddingBottom: sizes.scale(15),
   },
   headerTitle: {
