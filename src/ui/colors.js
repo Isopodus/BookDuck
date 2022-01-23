@@ -1,6 +1,6 @@
 export const colors = {
   white: "#fff",
-  black: "#000",
+  black: "#222222",
   grey: "#9f9f9f",
 
   blue: "#82e8ff",
@@ -8,7 +8,6 @@ export const colors = {
   green: "#81ffad",
   yellow: "#ffe382",
   red: "#ffe382",
-  orange: "#f8aa4b",
 };
 
 export const rgba = (hexCode, opacity = 1) => {

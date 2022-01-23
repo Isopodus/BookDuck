@@ -28,9 +28,11 @@ const History = ({ componentStyles, theme }) => {
         <Text style={componentStyles.headerTitle}>History</Text>
       </RowLayout>
       <ScrollView>
-        {history.map(({ id, ...restProps }) => (
-          <HistoryItem key={id} {...restProps} />
-        ))}
+        {history.length ? (
+          history.map(({ id, ...restProps }) => <HistoryItem key={id} {...restProps} />)
+        ) : (
+          <Text style={componentStyles.emptyText}>Looks like there are no books here yet :(</Text>
+        )}
       </ScrollView>
     </VerticalLayout>
   );

@@ -19,4 +19,12 @@ export const styles = ({ sizes, fonts, colors }) => ({
     color: colors.black,
     textAlign: "center",
   },
+  emptyText: {
+    marginTop: "70%",
+
+    fontFamily: fonts.bold,
+    fontSize: sizes.scale(20),
+    color: colors.black,
+    textAlign: "center",
+  },
 });
