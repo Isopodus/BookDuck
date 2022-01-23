@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "440563440581",
+    "project_id": "bookduck-6ecef",
+    "storage_bucket": "bookduck-6ecef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:440563440581:android:98ceecdeba1870d47d49ac",
+        "android_client_info": {
+          "package_name": "com.bookduck"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "440563440581-ngf67pm23av8eqbmngd1hsq14oa62uc6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuC6APyYg7nFiClkPhgPrkejg9fsaJtDE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "440563440581-ngf67pm23av8eqbmngd1hsq14oa62uc6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

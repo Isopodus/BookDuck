@@ -1,5 +1,5 @@
 const initialState = {
-  theme: "",
+  theme: "#82e8ff",
   isLoading: false,
 };
 

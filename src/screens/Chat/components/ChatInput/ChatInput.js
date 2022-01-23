@@ -22,6 +22,21 @@ const ChatInput = ({ theme, componentStyles, onNewMessage }) => {
     return (minutes.length === 1 ? "0" + minutes : minutes) + ":" + (seconds.length === 1 ? "0" + seconds : seconds);
   }, [timer]);
 
+  useEffect(() => {
+    const onSpeechResults = results => {
+      if (results.value.length > 0) {
+        onNewMessage(results.value[0][0].toUpperCase() + results.value[0].slice(1));
+        setMessage("");
+      }
+    };
+
+    Voice.onSpeechResults = onSpeechResults;
+
+    return () => {
+      Voice.destroy().then(Voice.removeAllListeners);
+    };
+  }, [onNewMessage]);
+
   const onAddNewMessage = useCallback(() => {
     if (message.trim().length > 0) {
       onNewMessage(message.trim());
@@ -30,20 +45,6 @@ const ChatInput = ({ theme, componentStyles, onNewMessage }) => {
   }, [message]);
 
   const onChange = useCallback((name, value) => setMessage(value), []);
-
-  const onSpeechResults = useCallback(
-    results => {
-      if (results.value.length > 0) {
-        onNewMessage(results.value[0][0].toUpperCase() + results.value[0].slice(1));
-        setMessage("");
-      }
-    },
-    [onNewMessage], // This is needed to properly get messages in the Voice context
-  );
-
-  useEffect(() => {
-    Voice.onSpeechResults = onSpeechResults;
-  }, [onSpeechResults]);
 
   useEffect(() => {
     let interval = null;

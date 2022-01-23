@@ -57,16 +57,27 @@ const Chat = ({ componentStyles }) => {
       Tts.setDefaultPitch(1.5);
 
       const quack = new Sound("duck.mp3", Sound.MAIN_BUNDLE, err => {
-        if (isVolumeOn) {
-          !err &&
-            quack.play(() => {
-              defaultMessages.forEach(message => Tts.speak(message.text));
-            });
+        if (!err) {
+          setQuack(quack);
         }
       });
-      setQuack(quack);
     });
   }, []);
+
+  useEffect(() => {
+    if (isVolumeOn && quack && messages.length === 2) {
+      quack.play(() => {
+        messages.forEach(message => Tts.speak(message.text));
+      });
+    }
+  }, [isVolumeOn, quack, messages]);
+
+  useEffect(() => {
+    const lastMessage = messages[messages.length - 1];
+    if (lastMessage?.isMy) {
+      waitForDuckAnswer(lastMessage.text);
+    }
+  }, [messages]);
 
   const onNewMessage = useCallback(
     userMessage => {
@@ -121,13 +132,6 @@ const Chat = ({ componentStyles }) => {
     },
     [duck, messages, setMessages, openBookModal, history, isVolumeOn],
   );
-
-  useEffect(() => {
-    const lastMessage = messages[messages.length - 1];
-    if (lastMessage?.isMy) {
-      waitForDuckAnswer(lastMessage.text);
-    }
-  }, [messages]);
 
   return (
     <>
