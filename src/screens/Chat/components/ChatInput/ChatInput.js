@@ -5,6 +5,7 @@ import Input from "../../../../library/Atoms/Input";
 import PrimaryButton from "../../../../library/Atoms/Button/PrimaryButton";
 import { Icon } from "../../../../library/Atoms/Icon";
 import { Animation } from "../../../../library/Atoms/Animation";
+import Voice from "@react-native-voice/voice";
 
 import { withTheme } from "../../../../hoc/withTheme";
 import { useOpenClose } from "../../../../hooks/useOpenClose";
@@ -13,7 +14,7 @@ const ChatInput = ({ theme, componentStyles, onNewMessage }) => {
   const [message, setMessage] = useState("");
   const [timer, setTimer] = useState(0);
 
-  const [voiceView, openVoiceView, closeVoiceView] = useOpenClose(false);
+  const [voiceView, setVoiceView] = useState(null);
 
   const formattedTimer = useMemo(() => {
     const minutes = `${Math.floor(timer / 60)}`;
@@ -22,13 +23,33 @@ const ChatInput = ({ theme, componentStyles, onNewMessage }) => {
     return (minutes.length === 1 ? "0" + minutes : minutes) + ":" + (seconds.length === 1 ? "0" + seconds : seconds);
   }, [timer]);
 
+  useEffect(() => {
+    Voice.onSpeechResults = onSpeechResults;
+  }, []);
+
   const onChange = useCallback((name, value) => setMessage(value), []);
+  const onSpeechResults = useCallback(
+    results => {
+      if (results.value.length > 0) {
+        onNewMessage(results.value[0][0].toUpperCase() + results.value[0].slice(1));
+        setMessage("");
+      }
+    },
+    [setMessage],
+  );
 
   useEffect(() => {
     let interval = null;
 
-    if (voiceView) interval = setInterval(() => setTimer(prev => prev + 1), 1000);
-    else {
+    if (voiceView) {
+      interval = setInterval(() => setTimer(prev => prev + 1), 1000);
+      Voice.start("en-US");
+    } else {
+      if (voiceView === null) {
+        Voice.cancel();
+      } else {
+        Voice.stop();
+      }
       setTimer(0);
       clearInterval(interval);
     }
@@ -40,14 +61,14 @@ const ChatInput = ({ theme, componentStyles, onNewMessage }) => {
     <RowLayout style={{ ...componentStyles.container, ...(voiceView ? componentStyles.containerVoice : {}) }}>
       {voiceView ? (
         <>
-          <PrimaryButton style={componentStyles.btn} onPress={closeVoiceView}>
+          <PrimaryButton style={componentStyles.btn} onPress={() => setVoiceView(null)}>
             <Icon name="trash" color={theme.colors.white} size={theme.sizes.scale(22)} />
           </PrimaryButton>
           <RowLayout style={componentStyles.voiceAnimation}>
             <Animation name="voice" />
           </RowLayout>
           <Text style={componentStyles.timerText}>{formattedTimer}</Text>
-          <PrimaryButton style={componentStyles.btn} onPress={() => {}}>
+          <PrimaryButton style={componentStyles.btn} onPress={() => setVoiceView(false)}>
             <Icon name="paper-plane-outline" color={theme.colors.white} size={theme.sizes.scale(22)} />
           </PrimaryButton>
         </>
@@ -65,7 +86,7 @@ const ChatInput = ({ theme, componentStyles, onNewMessage }) => {
           >
             <Icon name="paper-plane-outline" color={theme.colors.white} size={theme.sizes.scale(22)} />
           </PrimaryButton>
-          <PrimaryButton style={componentStyles.btn} text={"text"} onPress={openVoiceView}>
+          <PrimaryButton style={componentStyles.btn} text={"text"} onPress={() => setVoiceView(true)}>
             <Icon name="microphone-outline" color={theme.colors.white} size={theme.sizes.scale(25)} />
           </PrimaryButton>
         </>

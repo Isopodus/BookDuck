@@ -83,6 +83,7 @@ class Duck {
         "all good",
         "scared",
         "right",
+        "fine thank",
       ];
 
       // Check if the topics contain typical mood words indicating that we should ask for more keywords
@@ -129,8 +130,8 @@ class Duck {
     category = category.split("/")[0];
 
     // Find the book subject by category
-    // TODO: min 10 chars ===================================================
-    const subjects = (await api.getSubjects(category)).data.data;
+    console.log(category);
+    const subjects = (await api.getSubjects(category.slice(0, 10))).data.data;
 
     // Get the best subject by how many books there are for it
     const bestSubject = subjects.reduce((prev, current) => {
@@ -157,6 +158,11 @@ class Duck {
     });
 
     return result;
+  };
+
+  resetDialog = stage => {
+    this.currentStage = stage;
+    this.mood = null;
   };
 }
 

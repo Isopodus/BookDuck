@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { withTheme } from "../../hoc/withTheme";
 import { setAction } from "../../store/actions";
 import { useOpenClose } from "../../hooks/useOpenClose";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 
 import Duck from "../../Duck";
 import Tts from "react-native-tts";
@@ -19,6 +20,7 @@ const Chat = ({ componentStyles }) => {
 
   const dispatch = useDispatch();
 
+  const [isVolumeOn] = useLocalStorage("volume", true);
   const [messages, setMessages] = useState([]);
   const [bookId, setBookId] = useState([]);
   const [duck] = useState(new Duck(loadingState => dispatch(setAction("loading", loadingState))));
@@ -40,7 +42,7 @@ const Chat = ({ componentStyles }) => {
       Tts.setDefaultVoice("en-us-x-tpd-network");
       Tts.setDefaultPitch(1.5);
 
-      defaultMessages.forEach(message => Tts.speak(message.text));
+      isVolumeOn && defaultMessages.forEach(message => Tts.speak(message.text));
     });
   }, []);
 
@@ -58,11 +60,15 @@ const Chat = ({ componentStyles }) => {
         let newMessages = [...messages];
         if (response.answer) {
           newMessages = [...newMessages, { text: response.answer }];
-          Tts.speak(response.answer);
+          isVolumeOn && Tts.speak(response.answer);
         }
         if (response.books.length > 0) {
           const selectedBook = response.books[Math.floor(Math.random() * response.books.length)];
-          Tts.speak(selectedBook.title);
+          isVolumeOn && Tts.speak(selectedBook.title);
+
+          const dialogContinueMessage = "Tell me anything else if you want to find another one!";
+          isVolumeOn && Tts.speak(dialogContinueMessage);
+          duck.resetDialog(1);
 
           newMessages = [
             ...newMessages,
@@ -77,6 +83,9 @@ const Chat = ({ componentStyles }) => {
                   },
                 },
               ],
+            },
+            {
+              text: dialogContinueMessage,
             },
           ];
         }

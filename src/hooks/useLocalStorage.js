@@ -1,15 +1,23 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const useLocalStorage = () => {
-  const onSetItem = useCallback(async (key, value) => {
-    await AsyncStorage.setItem("@" + key, JSON.stringify(value));
+export const useLocalStorage = (key, defaultValue = null) => {
+  const [itemValue, setItemValue] = useState(defaultValue);
+
+  const onSetItem = useCallback(
+    async value => {
+      setItemValue(value);
+      await AsyncStorage.setItem("@" + key, JSON.stringify(value));
+    },
+    [setItemValue],
+  );
+
+  useEffect(() => {
+    AsyncStorage.getItem("@" + key).then(value => {
+      // console.log(key, value);
+      setItemValue(value === null ? defaultValue : JSON.parse(value));
+    });
   }, []);
 
-  const onGetItem = useCallback(async key => {
-    const value = await AsyncStorage.getItem("@" + key);
-    return value === null ? null : JSON.parse(value);
-  }, []);
-
-  return [onSetItem, onGetItem];
+  return [itemValue, onSetItem];
 };
