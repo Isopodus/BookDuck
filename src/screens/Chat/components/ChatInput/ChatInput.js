@@ -24,7 +24,7 @@ const ChatInput = ({ theme, componentStyles, onNewMessage }) => {
 
   const onAddNewMessage = useCallback(() => {
     if (message.trim().length > 0) {
-      onNewMessage(message);
+      onNewMessage(message.trim());
       setMessage("");
     }
   }, [message]);
@@ -38,12 +38,12 @@ const ChatInput = ({ theme, componentStyles, onNewMessage }) => {
         setMessage("");
       }
     },
-    [setMessage],
+    [onNewMessage], // This is needed to properly get messages in the Voice context
   );
 
   useEffect(() => {
     Voice.onSpeechResults = onSpeechResults;
-  }, []);
+  }, [onSpeechResults]);
 
   useEffect(() => {
     let interval = null;

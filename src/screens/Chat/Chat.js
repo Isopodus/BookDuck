@@ -12,8 +12,9 @@ import { setAction } from "../../store/actions";
 import { useOpenClose } from "../../hooks/useOpenClose";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 
-import Duck from "../../Duck";
+import Duck from "../../models/Duck";
 import Tts from "react-native-tts";
+import { Keyboard } from "react-native";
 
 const Chat = ({ componentStyles }) => {
   const color = useSelector(state => state.theme);
@@ -35,6 +36,7 @@ const Chat = ({ componentStyles }) => {
       },
       { text: "How do you do?" },
     ];
+
     setMessages(defaultMessages);
 
     Tts.getInitStatus().then(() => {
@@ -54,7 +56,7 @@ const Chat = ({ componentStyles }) => {
     [messages, setMessages],
   );
 
-  const tellTheDuck = useCallback(
+  const waitForDuckAnswer = useCallback(
     userMessage => {
       duck.proceedDialog(userMessage).then(response => {
         let newMessages = [...messages];
@@ -78,6 +80,7 @@ const Chat = ({ componentStyles }) => {
                 {
                   text: "Show book details",
                   onPress: () => {
+                    Keyboard.dismiss();
                     setBookId(selectedBook.id);
                     openBookModal();
                   },
@@ -93,13 +96,13 @@ const Chat = ({ componentStyles }) => {
         setMessages(newMessages);
       });
     },
-    [duck, messages, setMessages, setBookId, openBookModal],
+    [duck, messages, setMessages, setBookId, openBookModal, isVolumeOn],
   );
 
   useEffect(() => {
     const lastMessage = messages[messages.length - 1];
     if (lastMessage?.isMy) {
-      tellTheDuck(lastMessage.text);
+      waitForDuckAnswer(lastMessage.text);
     }
   }, [messages]);
 

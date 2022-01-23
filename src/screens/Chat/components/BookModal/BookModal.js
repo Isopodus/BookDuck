@@ -6,7 +6,7 @@ import PrimaryButton from "../../../../library/Atoms/Button/PrimaryButton";
 import { Icon } from "../../../../library/Atoms/Icon";
 import VerticalLayout from "../../../../library/Layouts/VerticalLayout";
 import Modal from "../../../../library/Molecules/Modal";
-import api from "../../../../api";
+import api from "../../../../requests/api";
 
 const BookModal = ({ open, theme, componentStyles, toggleModal, bookId = null }) => {
   const [book, setBook] = useState(null);
@@ -21,8 +21,8 @@ const BookModal = ({ open, theme, componentStyles, toggleModal, bookId = null })
     return book?.authors.map(author => author.name).join(", ");
   }, [book]);
 
-  const openWeb = useCallback(bookName => {
-    Linking.openURL("https://www.google.com/search?q=" + bookName);
+  const openWeb = useCallback(book => {
+    Linking.openURL("https://www.google.com/search?q=" + book.title + " - " + book.authors[0]?.name);
   }, []);
 
   useEffect(() => {
@@ -45,9 +45,11 @@ const BookModal = ({ open, theme, componentStyles, toggleModal, bookId = null })
           <VerticalLayout>
             <Text style={componentStyles.bookTitle}>{book.title}</Text>
             <Text style={componentStyles.author}>{authors}</Text>
-            <Text style={componentStyles.description}>{book.description}</Text>
+            <Text style={componentStyles.description} numberOfLines={5}>
+              {book.description}
+            </Text>
           </VerticalLayout>
-          <PrimaryButton style={componentStyles.btn} onPress={() => openWeb(book.title)}>
+          <PrimaryButton style={componentStyles.btn} onPress={() => openWeb(book)}>
             <Text style={componentStyles.btnText}>Search this book on the web</Text>
           </PrimaryButton>
         </>
