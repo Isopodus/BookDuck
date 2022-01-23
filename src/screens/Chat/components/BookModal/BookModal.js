@@ -16,17 +16,21 @@ const BookModal = ({ open, theme, componentStyles, toggleModal, bookId = null })
     return icons[Math.floor(Math.random() * icons.length)];
   }, []);
 
-  useEffect(() => {
-    if (open && bookId !== null) {
-      api.getBookData(bookId).then(book => setBook(book.data));
-    }
-  }, [open, bookId]);
+  const authors = useMemo(() => {
+    if (!book) return "";
+    return book?.authors.map(author => author.name).join(", ");
+  }, [book]);
 
   const openWeb = useCallback(bookName => {
     Linking.openURL("https://www.google.com/search?q=" + bookName);
-  });
+  }, []);
 
-  const authors = book?.authors.map(author => author.name).join(", ");
+  useEffect(() => {
+    if (!open) return;
+    if (bookId === null) return;
+    api.getBookData(bookId).then(book => setBook(book.data));
+  }, [open, bookId]);
+
   return (
     <Modal style={componentStyles.modal} open={open}>
       {book && (

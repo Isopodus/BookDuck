@@ -4,7 +4,6 @@ import VerticalLayout from "../../../../library/Layouts/VerticalLayout";
 import Message from "../../../../library/Molecules/Message";
 import ChatTypingIndicator from "../ChatTypingIndicator/ChatTypingIndicator";
 
-import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 
 import { withTheme } from "../../../../hoc/withTheme";

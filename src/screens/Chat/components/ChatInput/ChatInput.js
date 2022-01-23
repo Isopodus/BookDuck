@@ -8,7 +8,6 @@ import { Animation } from "../../../../library/Atoms/Animation";
 import Voice from "@react-native-voice/voice";
 
 import { withTheme } from "../../../../hoc/withTheme";
-import { useOpenClose } from "../../../../hooks/useOpenClose";
 
 const ChatInput = ({ theme, componentStyles, onNewMessage }) => {
   const [message, setMessage] = useState("");
@@ -23,11 +22,15 @@ const ChatInput = ({ theme, componentStyles, onNewMessage }) => {
     return (minutes.length === 1 ? "0" + minutes : minutes) + ":" + (seconds.length === 1 ? "0" + seconds : seconds);
   }, [timer]);
 
-  useEffect(() => {
-    Voice.onSpeechResults = onSpeechResults;
-  }, []);
+  const onAddNewMessage = useCallback(() => {
+    if (message.trim().length > 0) {
+      onNewMessage(message);
+      setMessage("");
+    }
+  }, [message]);
 
   const onChange = useCallback((name, value) => setMessage(value), []);
+
   const onSpeechResults = useCallback(
     results => {
       if (results.value.length > 0) {
@@ -39,17 +42,18 @@ const ChatInput = ({ theme, componentStyles, onNewMessage }) => {
   );
 
   useEffect(() => {
+    Voice.onSpeechResults = onSpeechResults;
+  }, []);
+
+  useEffect(() => {
     let interval = null;
 
     if (voiceView) {
       interval = setInterval(() => setTimer(prev => prev + 1), 1000);
       Voice.start("en-US");
     } else {
-      if (voiceView === null) {
-        Voice.cancel();
-      } else {
-        Voice.stop();
-      }
+      if (voiceView === null) Voice.cancel();
+      else Voice.stop();
       setTimer(0);
       clearInterval(interval);
     }
@@ -75,15 +79,7 @@ const ChatInput = ({ theme, componentStyles, onNewMessage }) => {
       ) : (
         <>
           <Input name="message" placeholder={"Type your message here..."} onChange={onChange} text={message} />
-          <PrimaryButton
-            style={{ ...componentStyles.btn, ...componentStyles.sendTextBtn }}
-            onPress={() => {
-              if (message.trim().length > 0) {
-                onNewMessage(message);
-                setMessage("");
-              }
-            }}
-          >
+          <PrimaryButton style={{ ...componentStyles.btn, ...componentStyles.sendTextBtn }} onPress={onAddNewMessage}>
             <Icon name="paper-plane-outline" color={theme.colors.white} size={theme.sizes.scale(22)} />
           </PrimaryButton>
           <PrimaryButton style={componentStyles.btn} text={"text"} onPress={() => setVoiceView(true)}>

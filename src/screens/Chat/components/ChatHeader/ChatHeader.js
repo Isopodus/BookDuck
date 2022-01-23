@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Text } from "react-native";
 import RowLayout from "../../../../library/Layouts/RowLayout";
 import { Icon } from "../../../../library/Atoms/Icon";
@@ -17,6 +17,8 @@ const ChatHeader = ({ componentStyles, theme }) => {
 
   const [isVolumeOn, onSetVolumeValue] = useLocalStorage("volume", true);
 
+  const onToggleVolume = useCallback(() => onSetVolumeValue(!isVolumeOn), [isVolumeOn]);
+
   useEffect(() => {
     !isVolumeOn && Tts.stop();
   }, [isVolumeOn]);
@@ -24,7 +26,7 @@ const ChatHeader = ({ componentStyles, theme }) => {
   return (
     <RowLayout style={componentStyles.component(color)}>
       <Text style={componentStyles.headerTitle}>BookDuck chat</Text>
-      <PrimaryButton style={componentStyles.btn} onPress={() => onSetVolumeValue(!isVolumeOn)}>
+      <PrimaryButton style={componentStyles.btn} onPress={onToggleVolume}>
         <Icon
           name={isVolumeOn ? "ios-volume-high-outline" : "volume-mute-outline"}
           color={theme.colors.white}
