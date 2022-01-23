@@ -6,7 +6,13 @@ import Fontisto from "react-native-vector-icons/Fontisto";
 
 export const Icon = ({ name, color, size, ...props }) => {
   const IconContainer = useMemo(() => {
-    if (name === "paper-plane-outline" || name === "close") return Ionicons;
+    if (
+      name === "paper-plane-outline" ||
+      name === "close" ||
+      name === "volume-mute-outline" ||
+      name === "ios-volume-high-outline"
+    )
+      return Ionicons;
     if (name === "microphone-outline" || name === "duck") return MaterialCommunityIcons;
     if (name === "trash") return Feather;
     if (name === "slightly-smile" || name === "smiley" || name === "smiling") return Fontisto;

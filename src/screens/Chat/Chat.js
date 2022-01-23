@@ -3,6 +3,7 @@ import VerticalLayout from "../../library/Layouts/VerticalLayout";
 import ChatWindow from "./components/ChatWindow/ChatWindow";
 import ChatInput from "./components/ChatInput/ChatInput";
 import BookModal from "./components/BookModal/BookModal";
+import ChatHeader from "./components/ChatHeader/ChatHeader";
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -59,6 +60,7 @@ const Chat = ({ componentStyles }) => {
   return (
     <>
       <VerticalLayout style={componentStyles.screen(color)}>
+        <ChatHeader />
         <ChatWindow messages={messages} />
         <ChatInput onNewMessage={onNewMessage} />
       </VerticalLayout>
