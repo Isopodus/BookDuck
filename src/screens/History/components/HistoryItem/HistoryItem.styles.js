@@ -12,27 +12,32 @@ export const styles = ({ sizes, fonts, colors }) => ({
 
     backgroundColor: colors.white,
   },
+  bookInfo: {
+    flex: 0.65,
+  },
   bookTitle: {
     marginBottom: sizes.scale(10),
 
     fontFamily: fonts.bold,
-    fontSize: sizes.scale(18),
+    fontSize: sizes.scale(14),
     color: colors.black,
     textTransform: "uppercase",
   },
   author: {
     fontFamily: fonts.regular,
-    fontSize: sizes.scale(14),
+    fontSize: sizes.scale(12),
     fontStyle: "italic",
     color: colors.black,
   },
   btn: {
+    flex: 0.35,
     height: sizes.scale(40),
+    marginLeft: sizes.scale(5),
     paddingHorizontal: sizes.scale(10),
   },
   btnText: {
     fontFamily: fonts.regular,
-    fontSize: sizes.scale(14),
+    fontSize: sizes.scale(13),
     color: colors.white,
   },
 });
