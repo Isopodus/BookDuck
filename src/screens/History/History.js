@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { ScrollView, Text, TouchableOpacity, Linking } from "react-native";
 import RowLayout from "../../library/Layouts/RowLayout";
 import VerticalLayout from "../../library/Layouts/VerticalLayout";
@@ -23,6 +23,8 @@ const History = ({ componentStyles, theme }) => {
     Linking.openURL("https://www.google.com/search?q=" + book.title + " - " + book.authors[0]?.name);
   }, []);
 
+  const uniqueHistory = useMemo(() => [...new Map(history.map(book => [book.id, book])).values()]);
+
   return (
     <VerticalLayout style={componentStyles.screen(color)}>
       <RowLayout style={componentStyles.header}>
@@ -32,8 +34,8 @@ const History = ({ componentStyles, theme }) => {
         <Text style={componentStyles.headerTitle}>History</Text>
       </RowLayout>
       <ScrollView contentContainerStyle={componentStyles.scrollView}>
-        {history.length ? (
-          history.map(({ id, ...restProps }) => <HistoryItem key={id} {...restProps} viewDetails={openWeb} />)
+        {uniqueHistory.length ? (
+          uniqueHistory.map(({ id, ...restProps }) => <HistoryItem key={id} {...restProps} viewDetails={openWeb} />)
         ) : (
           <Text style={componentStyles.emptyText}>Looks like there are no books here yet :(</Text>
         )}
