@@ -1,6 +1,7 @@
 const SET_ACTIONS = {
   theme: "SET_THEME",
   loading: "SET_IS_LOADING",
+  modal: "SET_MODAL",
 };
 const CLEAN_ACTIONS = {};
 

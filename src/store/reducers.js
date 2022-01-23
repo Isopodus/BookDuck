@@ -8,6 +8,9 @@ export default function reducers(state = initialState, action) {
     case "SET_IS_LOADING": {
       return { ...state, isLoading: action.payload };
     }
+    case "SET_MODAL": {
+      return { ...state, isModal: action.payload };
+    }
     default:
       return state;
   }

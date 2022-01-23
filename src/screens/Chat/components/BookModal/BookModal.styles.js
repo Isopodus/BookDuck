@@ -23,6 +23,7 @@ export const styles = ({ sizes, fonts, colors }) => ({
     fontSize: sizes.scale(22),
     color: colors.black,
     textTransform: "uppercase",
+    textAlign: "center",
   },
   author: {
     marginBottom: sizes.scale(15),
@@ -30,11 +31,13 @@ export const styles = ({ sizes, fonts, colors }) => ({
     fontFamily: fonts.regularItalic,
     fontSize: sizes.scale(18),
     color: colors.black,
+    textAlign: "center",
   },
   description: {
     fontFamily: fonts.regular,
     fontSize: sizes.scale(14),
     color: colors.black,
+    textAlign: "center",
   },
   btn: {
     width: "100%",
