@@ -20,10 +20,12 @@ const Chat = ({ componentStyles }) => {
 
   const dispatch = useDispatch();
 
-  const [isVolumeOn] = useLocalStorage("volume", true);
   const [messages, setMessages] = useState([]);
   const [bookId, setBookId] = useState([]);
   const [duck] = useState(new Duck(loadingState => dispatch(setAction("loading", loadingState))));
+
+  const [isVolumeOn] = useLocalStorage("volume", true);
+  const [history, onUpdateHistory] = useLocalStorage("history", []);
 
   const [bookModal, openBookModal, closeBookModal] = useOpenClose(false);
 
@@ -64,6 +66,7 @@ const Chat = ({ componentStyles }) => {
         }
         if (response.books.length > 0) {
           const selectedBook = response.books[Math.floor(Math.random() * response.books.length)];
+          onUpdateHistory([...history, selectedBook]);
           isVolumeOn && Tts.speak(selectedBook.title);
 
           const dialogContinueMessage = "Tell me anything else if you want to find another one!";
@@ -93,7 +96,7 @@ const Chat = ({ componentStyles }) => {
         setMessages(newMessages);
       });
     },
-    [duck, messages, setMessages, setBookId, openBookModal],
+    [duck, messages, setMessages, setBookId, openBookModal, history],
   );
 
   useEffect(() => {

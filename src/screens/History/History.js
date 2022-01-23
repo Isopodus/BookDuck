@@ -3,16 +3,19 @@ import { ScrollView, Text, TouchableOpacity } from "react-native";
 import RowLayout from "../../library/Layouts/RowLayout";
 import VerticalLayout from "../../library/Layouts/VerticalLayout";
 import { Icon } from "../../library/Atoms/Icon";
+import HistoryItem from "./components/HistoryItem/HistoryItem";
 
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 
 import { withTheme } from "../../hoc/withTheme";
-import HistoryItem from "./components/HistoryItem/HistoryItem";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 
 const History = ({ componentStyles, theme }) => {
   const { navigate } = useNavigation();
   const color = useSelector(state => state.theme);
+
+  const [history] = useLocalStorage("history", []);
 
   const onGoBack = useCallback(() => navigate("Chat"), []);
 
@@ -25,8 +28,8 @@ const History = ({ componentStyles, theme }) => {
         <Text style={componentStyles.headerTitle}>History</Text>
       </RowLayout>
       <ScrollView>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(() => (
-          <HistoryItem />
+        {history.map(({ id, ...restProps }) => (
+          <HistoryItem key={id} {...restProps} />
         ))}
       </ScrollView>
     </VerticalLayout>
