@@ -1,11 +1,11 @@
 import React from "react";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, Text } from "react-native";
 
 import { withTheme } from "../../../../hoc/withTheme";
 
-const PrimaryButton = ({ componentStyles, style, onPress, children }) => (
+const PrimaryButton = ({ componentStyles, style, onPress, text }) => (
   <TouchableOpacity style={{ ...componentStyles.primaryBtn, ...style }} onPress={onPress}>
-    {children}
+    <Text style={componentStyles.primaryBtnText}>{text}</Text>
   </TouchableOpacity>
 );
 

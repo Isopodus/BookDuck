@@ -6,7 +6,7 @@ export const withTheme =
   ({ componentStyles, ...props }) => {
     const theme = useTheme();
 
-    const localStyles = useMemo(() => componentStyles(theme), [componentStyles, theme]);
+    const localStyles = useMemo(() => (componentStyles ? componentStyles(theme) : {}), [componentStyles, theme]);
 
     return <Component {...props} theme={theme} componentStyles={localStyles} />;
   };
